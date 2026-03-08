@@ -10,7 +10,7 @@ export default function TaskCard({ _id, title, description, tag }) {
     e.preventDefault();
     try {
       await deleteTask(_id);
-      console.log("Task deleted:", _id);
+      // console.log("Task deleted:", _id);
     } catch (error) {
       console.error(error);
     }

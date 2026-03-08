@@ -45,7 +45,7 @@ function EditTask() {
     if (!formValidation()) return;
     try {
       await updateTask(id, formData);
-      console.log("Task updated:", formData);
+      // console.log("Task updated:", formData);
       navigate("/tasks");
     } catch (error) {
       console.error(error);
