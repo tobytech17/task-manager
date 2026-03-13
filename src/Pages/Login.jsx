@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import API from "../api";
 export default function Login() {
   const [password, setPassword] = useState("");
   const [identifier, setIdentifier] = useState("");
@@ -28,23 +29,12 @@ export default function Login() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          identifier,
-          password,
-        }),
+      const res = await API.post("/api/login", {
+        identifier,
+        password,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message);
-        return;
-      }
+      const data = res.data;
       //save token to local storage
       localStorage.setItem("token", data.token);
       toast.success("Login successful");
@@ -54,7 +44,7 @@ export default function Login() {
       }, 2000);
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("An error occurred during login");
+      toast.error(error.response?.data?.message || "Login failed");
     }
   };
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import API from "../api";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -62,21 +63,14 @@ export default function Register() {
     if (!formValidate()) return;
 
     try {
-      const res = await fetch("http://localhost:5000/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, username, password }),
+      const res = await API.post("/api/register", {
+        email,
+        username,
+        password,
       });
 
-      const data = await res.json();
+      const data = res.data;
       console.log("server response:", data);
-
-      if (!res.ok) {
-        toast.error(data.message);
-        return;
-      }
 
       toast.success("Registration successful!");
 
@@ -84,9 +78,9 @@ export default function Register() {
         navigate("/login");
       }, 1500);
     } catch (error) {
-      console.error(error);
-      toast.error("Server error");
-    }
+  console.error(error);
+  toast.error(error.response?.data?.message || "Server error");
+}
   };
 
   return (
