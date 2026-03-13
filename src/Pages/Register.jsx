@@ -78,9 +78,9 @@ export default function Register() {
         navigate("/login");
       }, 1500);
     } catch (error) {
-  console.error(error);
-  toast.error(error.response?.data?.message || "Server error");
-}
+      console.error(error);
+      toast.error(error.response?.data?.message || "Server error");
+    }
   };
 
   return (
