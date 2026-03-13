@@ -1,0 +1,56 @@
+import { useState } from "react";
+
+export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const res = await fetch("http://localhost:5000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await res.json();
+
+    localStorage.setItem("token", data.token);
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-xl shadow-lg w-[380px]">
+        <h2 className="text-2xl font-bold text-center mb-6">Welcome Back</h2>
+
+        <form onSubmit={handleLogin} className="space-y-4">
+          <input
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-600"
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-600"
+          />
+
+          <button className="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition">
+            Login
+          </button>
+        </form>
+
+        <p className="text-sm text-center mt-4">
+          Don't have an account?
+          <a href="/register" className="text-purple-600 ml-1">
+            Register
+          </a>
+        </p>
+      </div>
+    </div>
+  );
+}
