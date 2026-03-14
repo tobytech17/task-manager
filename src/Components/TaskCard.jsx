@@ -16,38 +16,42 @@ export default function TaskCard({ _id, title, description, tag }) {
     }
   };
   return (
-    <div className="mx-auto py-4  border border-gray-400 w-[90%] rounded-md">
+    <div className="mx-auto py-4  border border-gray-400 w-[95%] sm:w-[90%] rounded-md">
       <div className="flex flex-col w-full ">
-        <div className="flex flex-col md:flex-row justify-between text-right md:items-center mb-4 w-full px-8">
+        <div className="flex flex-row justify-between items-center mb-4 w-full px-4 sm:px-6 md:px-8">
           <p
-            className={`font-semibold px-3 py-1 rounded-md inline-block
+            className={`font-semibold px-3 py-1 rounded-md text-sm sm:text-base
               ${tag === "urgent" ? "text-red-600" : ""}
               ${tag === "important" ? "text-green-600" : ""}`}
           >
             {tag}
           </p>
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-row gap-2 sm:gap-3 md:gap-4">
             <Link to={`/edit/${_id}`}>
-              <button className="text-white bg-purple-400 py-2 px-4 rounded-md flex gap-2 cursor-pointer">
-                <FaRegEdit size={20} /> Edit
+              <button className="text-white bg-purple-400 py-1.5 sm:py-2  px-3 sm:px-4 rounded-md flex items-center  gap-1.5 sm:gap-2 cursor-pointer text-sm sm:text-base">
+                <FaRegEdit size={16} className="sm:hidden" />
+                <FaRegEdit size={20} className="hidden sm:block" />
+                <span>Edit</span>
               </button>
             </Link>
             <button
               onClick={handleOnClick}
-              className="text-purple-400 border border-purple-400 bg-white py-2 px-4 rounded-md flex gap-2 cursor-pointer"
+              className="text-purple-400 border border-purple-400 bg-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-md flex items-center gap-1.5 sm:gap-2 cursor-pointer text-sm sm:text-base"
             >
-              <IoTrashOutline size={20} /> Delete
+              <IoTrashOutline size={16} className="sm:hidden" />
+              <IoTrashOutline size={20} className="hidden sm:block" />
+              <span>Delete</span>
             </button>
           </div>
         </div>
 
         <hr className="w-full border-t border-gray-400 mb-4" />
 
-        <div className="px-8 flex flex-col gap-4">
-          <p className="text-4xl font-semibold wrap-break-word whitespace-normal">
+        <div className="px-4 sm:px-6 md:px-8 flex flex-col gap-2 sm:gap-3 md:gap-4">
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold wrap-break-word whitespace-normal">
             {title}
           </p>
-          <p className="text-gray-600 text-xl wrap-break-word whitespace-normal">
+          <p className="text-gray-600 text-sm sm:text-base md:text-lg lg:text-xl  wrap-break-word whitespace-normal">
             {description}
           </p>
         </div>

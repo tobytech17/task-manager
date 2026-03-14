@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, createContext } from "react";
 import axios from "axios";
 import API from "../api";
 
@@ -54,11 +54,6 @@ export function TaskProvider({ children }) {
       throw error;
     }
   };
-
-  // Optionally fetch tasks once when provider mounts
-  useEffect(() => {
-    getTasks();
-  }, []);
 
   return (
     <TaskContext.Provider

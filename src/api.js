@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
- baseURL: "https://server-task-manager-xpsw.onrender.com"
+ baseURL: "https://server-task-manager-xpsw.onrender.com",
+ withCredentials: true,
 });
 
 //attach token automatically

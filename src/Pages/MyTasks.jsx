@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
 import { TaskContext } from "../Context/TaskContext";
 import TaskCard from "../Components/TaskCard";
-export default function NewTask() {
+export default function MyTask() {
   const { allTask, getTasks } = useContext(TaskContext);
   const navigate = useNavigate();
   const addNewTask = (e) => {
@@ -17,17 +17,19 @@ export default function NewTask() {
 
   return (
     <Layout>
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 py-4 px-6 md:px-20 mb-8">
-        <p className="text-2xl md:text-4xl font-semibold">My Task</p>
+      <div className="flex flex-row justify-between items-center py-4 px-4 sm:px-8 md:px-14 lg:px-20 mb-6 sm:mb-8">
+        <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold">
+          My Task
+        </p>
         <button
           onClick={addNewTask}
-          className="text-purple-400 bg-white font-semibold text-lg md:text-xl cursor-pointer"
+          className="text-purple-400 bg-white font-semibold text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer whitespace-nowrap"
         >
           + Add New Task
         </button>
       </div>
 
-      <div className="flex flex-col gap-4 py-4">
+      <div className="flex flex-col gap-3 sm:gap-4 py-2 sm:py-4 px-2 sm:px-0 ">
         {allTask.length > 0 ? (
           allTask.map((task) => (
             <TaskCard
@@ -39,7 +41,7 @@ export default function NewTask() {
             />
           ))
         ) : (
-          <p className="text-purple-600 text-center">
+          <p className="text-purple-600 text-center text-sm sm:text-base">
             No tasks yet. Add one above!
           </p>
         )}
