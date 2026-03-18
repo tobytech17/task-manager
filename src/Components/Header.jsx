@@ -33,6 +33,10 @@ export default function Header() {
               <Link to="/tasks">
                 <p className="text-xl font-bold">All tasks</p>
               </Link>
+
+              <Link to="/notes">
+                <p className="text-xl font-bold">Notes</p>
+              </Link>
             </>
           )}
 
@@ -86,6 +90,10 @@ export default function Header() {
 
               <Link to="/tasks" onClick={() => setIsMenuOpen(false)}>
                 All tasks
+              </Link>
+
+              <Link to="/notes" onClick={() => setIsMenuOpen(false)}>
+                Notes
               </Link>
             </>
           )}

@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { TaskProvider } from "./Context/TaskContext.jsx";
+import { NoteProvider } from "./Context/NoteContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <TaskProvider>
-        <App />
+        <NoteProvider>
+          <App />
+        </NoteProvider>
       </TaskProvider>
     </BrowserRouter>
   </StrictMode>,

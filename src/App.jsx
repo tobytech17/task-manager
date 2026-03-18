@@ -9,6 +9,7 @@ import Register from "./Pages/Register";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Notes from "./Pages/Notes";
 function App() {
   return (
     <>
@@ -35,6 +36,14 @@ function App() {
           element={
             <ProtectedRoute>
               <EditTask />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notes"
+          element={
+            <ProtectedRoute>
+              <Notes />
             </ProtectedRoute>
           }
         />
