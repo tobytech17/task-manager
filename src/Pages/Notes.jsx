@@ -1,15 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import Layout from "../Components/Layout";
 import { NoteContext } from "../Context/NoteContext";
 import NoteCard from "../Components/NoteCard";
+import { toast } from "react-toastify";
 
 export default function Notes() {
   const { allNotes, getNotes, createNote } = useContext(NoteContext);
   const [formData, setFormData] = useState({ title: "", content: "" });
   const [error, setError] = useState("");
+  const hasFetched = useRef(false);
 
   useEffect(() => {
-    getNotes();
+    if (!hasFetched.current) {
+      getNotes();
+      hasFetched.current = true;
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -26,8 +31,10 @@ export default function Notes() {
     try {
       await createNote(formData);
       setFormData({ title: "", content: "" });
+      toast.success("Note created successfully!");
     } catch (error) {
       setError("Error creating note");
+      toast.error("Failed to create note");
     }
   };
 

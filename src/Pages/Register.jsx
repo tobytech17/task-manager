@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import API from "../api";
 
@@ -46,6 +46,11 @@ export default function Register() {
       toast.error(
         "Password must contain uppercase, lowercase, number and special character",
       );
+      return false;
+    }
+
+    if (!passwordRegex.test(password)) {
+      toast.error("Password does not meet requirements");
       return false;
     }
 
@@ -119,6 +124,18 @@ export default function Register() {
             </span>
           </div>
 
+          {/* Password requirements hint */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-500 space-y-1">
+            <p className="font-semibold text-gray-600 mb-1">
+              Password must contain:
+            </p>
+            <p>• At least one uppercase letter (A-Z)</p>
+            <p>• At least one lowercase letter (a-z)</p>
+            <p>• At least one number (0-9)</p>
+            <p>• At least one special character (@.#$!%?&*)</p>
+            <p>• Minimum 6 characters</p>
+          </div>
+
           <div className="relative">
             <input
               type={showConfirmPassword ? "text" : "password"}
@@ -139,6 +156,13 @@ export default function Register() {
             Register
           </button>
         </form>
+
+        <p className="text-sm text-center mt-4">
+          Already have an account?
+          <Link to="/login" className="text-purple-600 ml-1">
+            Log in
+          </Link>
+        </p>
       </div>
     </div>
   );

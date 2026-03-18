@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { NoteContext } from "../Context/NoteContext";
 import { IoTrashOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
+import { toast } from "react-toastify";
 export default function NoteCard({ _id, title, content }) {
   const { deleteNote, updateNote } = useContext(NoteContext);
   const [isEditing, setIsEditing] = useState(false);
@@ -10,8 +11,10 @@ export default function NoteCard({ _id, title, content }) {
   const handleDelete = async () => {
     try {
       await deleteNote(_id);
+      toast.success("Note deleted successfully!");
     } catch (error) {
       console.error("Error deleting note:", error);
+      toast.error("Failed to delete note");
     }
   };
 
@@ -20,8 +23,10 @@ export default function NoteCard({ _id, title, content }) {
       try {
         await updateNote(_id, editData);
         setIsEditing(false);
+        toast.success("Note updated successfully!");
       } catch (error) {
         console.error("Error updating note:", error);
+        toast.error("Failed to update note");
       }
     } else {
       setIsEditing(true);

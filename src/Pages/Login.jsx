@@ -9,6 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [identifier, setIdentifier] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showHint, setShowHint] = useState(false);
 
   const navigate = useNavigate();
 
@@ -65,6 +66,8 @@ export default function Login() {
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => setShowHint(true)}
+              onBlur={() => setShowHint(false)}
               className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-600"
             />
 
@@ -74,7 +77,21 @@ export default function Login() {
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
+
+            {showHint && (
+              <div className="absolute z-10 left-0 top-full mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg px-4 py-3 text-sm text-gray-500 space-y-1">
+                <p className="font-semibold text-gray-600 mb-1">
+                  Password must contain:
+                </p>
+                <p>• At least one uppercase letter (A-Z)</p>
+                <p>• At least one lowercase letter (a-z)</p>
+                <p>• At least one number (0-9)</p>
+                <p>• At least one special character (@.#$!%?&*)</p>
+                <p>• Minimum 6 characters</p>
+              </div>
+            )}
           </div>
+
           <button className="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition">
             Login
           </button>

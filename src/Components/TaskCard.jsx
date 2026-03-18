@@ -3,6 +3,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { IoTrashOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { TaskContext } from "../Context/TaskContext";
+import { toast } from "react-toastify";
 export default function TaskCard({ _id, title, description, tag }) {
   const { deleteTask } = useContext(TaskContext);
 
@@ -11,8 +12,10 @@ export default function TaskCard({ _id, title, description, tag }) {
     try {
       await deleteTask(_id);
       // console.log("Task deleted:", _id);
+      toast.success("Task deleted successfully");
     } catch (error) {
       console.error(error);
+      toast.error("Failed to delete task");
     }
   };
   return (
