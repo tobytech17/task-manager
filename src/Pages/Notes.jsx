@@ -8,6 +8,7 @@ export default function Notes() {
   const { allNotes, getNotes, createNote } = useContext(NoteContext);
   const [formData, setFormData] = useState({ title: "", content: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -23,11 +24,14 @@ export default function Notes() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting note:", formData);
+
     if (!formData.title || !formData.content) {
       setError("Please fill in all fields");
       return;
     }
     setError("");
+    setLoading(true);
     try {
       await createNote(formData);
       setFormData({ title: "", content: "" });

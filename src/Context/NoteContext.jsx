@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import API from "../api";
 
 export const NoteContext = createContext();
@@ -6,13 +6,25 @@ export const NoteContext = createContext();
 export function NoteProvider({ children }) {
   const [allNotes, setAllNotes] = useState([]);
 
+  //Auto fetch notes when app loads if token exists
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      getNotes();
+    }
+  }, []);
+
   const createNote = async (formData) => {
     try {
       const response = await API.post(`/api/notes/`, formData);
+      console.log("Created note:", response.data);
+
       setAllNotes((prev) => [...prev, response.data]);
       return response.data;
     } catch (error) {
       console.error("Error creating note:", error);
+      console.error("Server response:", error.response?.data);
+      console.error("Status:", error.response?.status);
       throw error;
     }
   };
