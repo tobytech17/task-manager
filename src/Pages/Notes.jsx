@@ -24,7 +24,6 @@ export default function Notes() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting note:", formData);
 
     if (!formData.title || !formData.content) {
       setError("Please fill in all fields");
@@ -39,6 +38,8 @@ export default function Notes() {
     } catch (error) {
       setError("Error creating note");
       toast.error("Failed to create note");
+    } finally {
+      setLoading(false);
     }
   };
 
