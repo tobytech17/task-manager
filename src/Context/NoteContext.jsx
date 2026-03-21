@@ -31,8 +31,6 @@ export function NoteProvider({ children }) {
       return response.data;
     } catch (error) {
       console.error("Error creating note:", error);
-      console.error("Server response:", error.response?.data);
-      console.error("Status:", error.response?.status);
       throw error;
     }
   };
@@ -53,7 +51,6 @@ export function NoteProvider({ children }) {
   const updateNote = async (id, formData) => {
     try {
       const response = await API.put(`/api/notes/${id}`, formData);
-      await getNotes();
       // setAllNotes((prev) =>
       //   prev.map((note) => (note._id === id ? response.data : note)),
       // );
@@ -67,7 +64,6 @@ export function NoteProvider({ children }) {
   const deleteNote = async (id) => {
     try {
       await API.delete(`/api/notes/${id}`);
-      await getNotes();
       // setAllNotes((prev) => prev.filter((note) => note._id !== id));
     } catch (error) {
       console.error("Error deleting note:", error);

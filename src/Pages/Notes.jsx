@@ -1,22 +1,31 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Layout from "../Components/Layout";
 import { NoteContext } from "../Context/NoteContext";
 import NoteCard from "../Components/NoteCard";
 import { toast } from "react-toastify";
 
 export default function Notes() {
-  const { allNotes, getNotes, createNote } = useContext(NoteContext);
+  const { createNote, updateNote, deleteNote, getNotes } =
+    useContext(NoteContext);
+  const [notes, setNotes] = useState([]);
   const [formData, setFormData] = useState({ title: "", content: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const hasFetched = useRef(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      getNotes();
-      hasFetched.current = true;
-    }
+    const fetch = async () => {
+      const data = await getNotes();
+      setNotes(data);
+    };
+    fetch();
   }, []);
+
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(search.toLowerCase()) ||
+      note.content.toLowerCase().includes(search.toLowerCase()),
+  );
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,7 +41,8 @@ export default function Notes() {
     setError("");
     setLoading(true);
     try {
-      await createNote(formData);
+      const newNote = await createNote(formData);
+      setNotes((prev) => [newNote, ...prev]);
       setFormData({ title: "", content: "" });
       toast.success("Note created successfully!");
     } catch (error) {
@@ -40,6 +50,30 @@ export default function Notes() {
       toast.error("Failed to create note");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteNote(id);
+      setNotes((prev) => prev.filter((note) => note._id !== id));
+      toast.success("Note deleted successfully!");
+    } catch (error) {
+      setError("Error deleting note");
+      toast.error("Failed to delete note");
+    }
+  };
+
+  const handleUpdate = async (id, editData) => {
+    try {
+      const updated = await updateNote(id, editData);
+      setNotes((prev) =>
+        prev.map((note) => (note._id === id ? updated : note)),
+      );
+      toast.success("Note updated successfully!");
+    } catch (error) {
+      setError("Error updating note");
+      toast.error("Failed to update note");
     }
   };
 
@@ -76,26 +110,40 @@ export default function Notes() {
           )}
           <button
             type="submit"
-            className="bg-purple-600 text-white py-3 rounded-md hover:bg-purple-700 transition duration-300"
+            disabled={loading}
+            className="bg-purple-600 text-white py-3 rounded-md hover:bg-purple-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Add Note
+            {loading ? "Adding..." : "Add Note"}
           </button>
         </form>
 
+        {/* Search Bar */}
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search notes by title or content..."
+          className=" w-full border border-gray-400 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
+
         {/* Notes List */}
         <div className="flex flex-col gap-3 sm:gap-4">
-          {allNotes.length > 0 ? (
-            allNotes.map((note) => (
+          {filteredNotes.length > 0 ? (
+            filteredNotes.map((note) => (
               <NoteCard
                 key={note._id}
                 _id={note._id}
                 title={note.title}
                 content={note.content}
+                onDelete={handleDelete}
+                onUpdate={handleUpdate}
               />
             ))
           ) : (
             <p className="text-purple-600 text-center text-sm sm:text-base">
-              No notes yet. Add one above!
+              {search
+                ? "No notes match your search."
+                : "No notes yet. Add one above!"}
             </p>
           )}
         </div>

@@ -1,29 +1,28 @@
-import React, { useContext, useState } from "react";
-import { NoteContext } from "../Context/NoteContext";
+import React, { useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
-export default function NoteCard({ _id, title, content }) {
-  const { deleteNote, updateNote } = useContext(NoteContext);
+export default function NoteCard({ _id, title, content, onDelete, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({ title, content });
 
   const handleDelete = async () => {
     try {
-      await deleteNote(_id);
-      toast.success("Note deleted successfully!");
+      await onDelete(_id);
     } catch (error) {
       console.error("Error deleting note:", error);
-      toast.error("Failed to delete note");
     }
   };
 
   const handleEdit = async () => {
     if (isEditing) {
-      try {
-        await updateNote(_id, editData);
+      if (editData.title === title && editData.content === content) {
         setIsEditing(false);
-        toast.success("Note updated successfully!");
+        return; // No changes made, just exit edit mode
+      }
+      try {
+        await onUpdate(_id, editData);
+        setIsEditing(false);
       } catch (error) {
         console.error("Error updating note:", error);
         toast.error("Failed to update note");
